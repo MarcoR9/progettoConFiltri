@@ -25,4 +25,10 @@ public interface ProductService {
 
 	List<Product> readByCatAndPrice(String category,BigDecimal minPrice, BigDecimal maxPrice);
 
+	List<Product> readByCatAndName(String category, String name);
+
+	List<Product> readByCatAndNameDesc(String category, String name);
+
+	List<Product> readByCatAndNameAsc(String category, String name);
+
 }

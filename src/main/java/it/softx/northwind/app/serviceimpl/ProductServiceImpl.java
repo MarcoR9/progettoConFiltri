@@ -25,10 +25,22 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> readByCategory(String category){
 		return productDao.findByCategory(category);
 	}
+	@Override
+	public List<Product> readByCatAndName(String category, String name){
+		return productDao.findByCategoryAndProductNameContaining(category, name);
+	}
+	@Override
+	public List<Product> readByCatAndNameAsc(String category, String name){
+		return productDao.findByCategoryAndProductNameContainingOrderByListPriceAsc(category, name);
+	}
+	@Override
+	public List<Product> readByCatAndNameDesc(String category, String name){
+		return productDao.findByCategoryAndProductNameContainingOrderByListPriceDesc(category, name);
+	}
 	
 	@Override
 	public List<Product> readByName(String name){
-		return productDao.findByProductName(name);
+		return productDao.findByProductNameContaining(name);
 	}
 
 	@Override

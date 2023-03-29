@@ -45,6 +45,19 @@ public class ProductsController {
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
+	@GetMapping("/cat/name")
+	public ResponseEntity<Object> getByCatAndName(@RequestParam(name = "c") String c,
+			@RequestParam(name = "n") String n, @RequestParam(name = "s") int s) {
+		switch (s) {
+		case 0:
+		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndName(c, n)));
+		case 1:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndNameAsc(c, n)));
+		case 2:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndNameDesc(c, n)));
+		default: return ResponseEntity.badRequest().build();
+		}
+	}
 	@GetMapping("/cat/price")
 	public ResponseEntity<Object> getByCategoryAndMaxPrice(@RequestParam(name = "c") String c,
 			@RequestParam(name = "m") BigDecimal minPrice, @RequestParam(name = "x") BigDecimal maxPrice) {
@@ -52,7 +65,7 @@ public class ProductsController {
 			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndPrice(c, minPrice, maxPrice)));
 		
 	}
-	//cerca prodotti per nome prodotto esatto. DAL FRONTEND VOGLIO ( n => il nome)
+	//cerca prodotti per parte nome prodotto DAL FRONTEND VOGLIO ( n => il nome)
 	@GetMapping("/name")
 	public ResponseEntity<Object> getByName(@RequestParam(name = "n") String n) {
 		if(StringUtils.hasText(n)) {

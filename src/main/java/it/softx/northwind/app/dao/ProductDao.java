@@ -14,8 +14,11 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 	@Query("SELECT DISTINCT p.category FROM Product p")
 	List<String> findDistinctByCategory();
 
-	List<Product> findByProductName(String productName);
+	List<Product> findByProductNameContaining(String productName);
 	List<Product> findByCategory(String category);
+	List<Product> findByCategoryAndProductNameContaining(String category, String productName);
+	List<Product> findByCategoryAndProductNameContainingOrderByListPriceAsc(String category, String productName);
+	List<Product> findByCategoryAndProductNameContainingOrderByListPriceDesc(String category, String productName);
 	List<Product> findByDescriptionContaining(String description);
  	List<Product> findByCategoryOrderByListPriceAsc(String category);
     List<Product> findByCategoryOrderByListPriceDesc(String category);
