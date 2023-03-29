@@ -44,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.findByDescriptionContaining(description);
 	}
 	@Override
-	public List<Product> readByCatAndPriceLessThan(String category, BigDecimal maxPrice){
-		return productDao.findByCategoryAndListPriceLessThan(category, maxPrice);
+	public List<Product> readByCatAndPrice(String category,BigDecimal minPrice, BigDecimal maxPrice){
+		return productDao.findByCategoryAndListPriceGreaterThanAndListPriceLessThan(category,minPrice, maxPrice);
 	}
 
 	

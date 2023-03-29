@@ -19,6 +19,6 @@ public interface ProductDao extends JpaRepository<Product, Long> {
 	List<Product> findByDescriptionContaining(String description);
  	List<Product> findByCategoryOrderByListPriceAsc(String category);
     List<Product> findByCategoryOrderByListPriceDesc(String category);
-    List<Product> findByCategoryAndListPriceLessThan(String category, BigDecimal listPrice);
+    List<Product> findByCategoryAndListPriceGreaterThanAndListPriceLessThan(String category,BigDecimal minListPrice, BigDecimal maxListPrice);
     
 }

@@ -23,6 +23,6 @@ public interface ProductService {
 
 	List<Product> readAll();
 
-	List<Product> readByCatAndPriceLessThan(String category, BigDecimal maxPrice);
+	List<Product> readByCatAndPrice(String category,BigDecimal minPrice, BigDecimal maxPrice);
 
 }

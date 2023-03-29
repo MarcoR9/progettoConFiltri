@@ -45,11 +45,11 @@ public class ProductsController {
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
-	@GetMapping("/cat/maxp")
+	@GetMapping("/cat/price")
 	public ResponseEntity<Object> getByCategoryAndMaxPrice(@RequestParam(name = "c") String c,
-			@RequestParam(name = "p") BigDecimal price) {
+			@RequestParam(name = "m") BigDecimal minPrice, @RequestParam(name = "x") BigDecimal maxPrice) {
 		
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndPriceLessThan(c, price)));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndPrice(c, minPrice, maxPrice)));
 		
 	}
 	//cerca prodotti per nome prodotto esatto. DAL FRONTEND VOGLIO ( n => il nome)
