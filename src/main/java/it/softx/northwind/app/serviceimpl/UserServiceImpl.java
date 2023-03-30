@@ -20,9 +20,13 @@ public class UserServiceImpl implements UserService {
 	public Customer readByUsernamePassword(String u, String p) {
 		return userDao.findByUsernamePassword(u, p).map(User::getCustomer).orElse(null);
 	}
-	
+	@Override
 	@Transactional
-	public User createUser(String username, String password, Long customerId) {
-		return userDao.createUser(username, password, customerId);
+	public void createUser(String username, String password, Long customerId) {
+		userDao.createUser(username, password, customerId);
+	}
+	@Override
+	public User readByEmail(String email) {
+		return userDao.findByUsername(email);
 	}
 }

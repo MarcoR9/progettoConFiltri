@@ -16,5 +16,7 @@ public interface UserDao extends JpaRepository<User, Long>{
 	
 	@Modifying
 	@Query(nativeQuery =true, value ="insert into northwind.users(username,password,customer_id) values(?1,sha1(?2),?3)")
-	User createUser(String username, String password, Long customerId);
+	void createUser(String username, String password, Long customerId);
+	
+	User findByUsername(String username);
 }
