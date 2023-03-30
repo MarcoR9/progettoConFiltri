@@ -17,7 +17,7 @@ public class PurchaseOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	@Column(name="payment_amount" ,nullable = true)
+	@Column(name="payment_amount",nullable = true)
 	private BigDecimal paymentAmount;
 	
 	

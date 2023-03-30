@@ -18,6 +18,14 @@ public class OrderStatus {
 	@Column(name = "status_name", nullable = false)
 	private String statusName;
 	
+	public OrderStatus() {
+		
+	}
+	public OrderStatus(Long id, String statusName) {
+		this.id=id;
+		this.statusName=statusName;
+	}
+	
 	public Long getId() {
 		return id;
 	}

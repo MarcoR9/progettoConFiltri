@@ -9,8 +9,6 @@ public interface CustomerService {
 
 	Customer readById(Long id);
 
-//	List<Customer> readCustomerAll();
-
 	List<Customer> readCustomerByEmail(String email);
 
 	Customer createCustomer(CustomerRegisterDto dto);
