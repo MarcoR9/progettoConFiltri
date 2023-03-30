@@ -2,6 +2,9 @@ package it.softx.northwind.model.dto;
 
 import java.math.BigDecimal;
 
+import org.springframework.hateoas.server.core.Relation;
+
+@Relation(collectionRelation = "products", itemRelation = "product")
 public class ProductResourceDto {
 
 	private Long id;

@@ -1,9 +1,15 @@
 package it.softx.northwind.app.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,9 +32,11 @@ public class ProductsController {
 	private ProductService prodService;
 	@Autowired
 	private ProductMapperService prodMap;
+	
+	private ProductResourceModelAssembler productResourceModelAssembler = new ProductResourceModelAssembler();
 
 	@GetMapping
-	public ResponseEntity<Object> getAll(@RequestParam(name = "c", required = false) String c,
+	public ResponseEntity<CollectionModel<EntityModel<ProductResourceDto>>> getAll(@RequestParam(name = "c", required = false) String c,
 			@RequestParam(name = "n", required = false) String n, @RequestParam(name = "p", required = false) Integer p,
 			@RequestParam(name = "s", required = false) Integer s,
 			@RequestParam(name = "m", required = false) BigDecimal minPrice,
@@ -36,30 +44,41 @@ public class ProductsController {
 			@RequestParam(name = "d", required = false) String d) {
 		if (!StringUtils.hasText(c)) {
 			if (StringUtils.hasText(n)) {
-				return getByName(n);
+				return mapToCollectionModel(getByName(n), linkTo(methodOn(ProductsController.class).getByName(n)).withSelfRel());
 			}
 			if (StringUtils.hasText(d)) {
-				return getByDescriptionContaining(d);
+				return mapToCollectionModel(getByDescriptionContaining(d), linkTo(methodOn(ProductsController.class).getByDescriptionContaining(d)).withSelfRel());
 			}
 			// devo necessariamente gocciolare
 		}
 		if (StringUtils.hasText(c) && minPrice != null && maxPrice != null) {
-			return getByCategoryAndMaxPrice(c, minPrice, maxPrice);
+			return mapToCollectionModel(getByCategoryAndMaxPrice(c, minPrice, maxPrice), linkTo(methodOn(ProductsController.class).getByCategoryAndMaxPrice(c, minPrice, maxPrice)).withSelfRel());
 		}
 		if (StringUtils.hasText(c) && StringUtils.hasText(n) && s != null) {
-			return getByCatAndName(c, n, s);
+			return mapToCollectionModel(getByCatAndName(c, n, s), linkTo(methodOn(ProductsController.class).getByCatAndName(c, n, s)).withSelfRel());
 		}
 		if (StringUtils.hasText(c) && p != null) {
-			return getByCategoryAndPriceAscOrDesc(c, p);
+			return mapToCollectionModel(getByCategoryAndPriceAscOrDesc(c, p), linkTo(methodOn(ProductsController.class).getByCategoryAndPriceAscOrDesc(c, p)).withSelfRel());
 		}
 		if (StringUtils.hasText(c) || StringUtils.hasText(n) || minPrice != null || maxPrice != null
 				|| StringUtils.hasText(d) || p != null || s != null) {
 			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.ok(getAll());
+		return ResponseEntity.ok(productResourceModelAssembler.toCollectionModel(getAll()).add(linkTo(ProductsController.class).withSelfRel()));
+	}
+
+	private ResponseEntity<CollectionModel<EntityModel<ProductResourceDto>>> mapToCollectionModel(
+			ResponseEntity<Object> r, Link args) {
+		@SuppressWarnings("unchecked")
+		List<ProductResourceDto> list = (List<ProductResourceDto>) r.getBody();
+		if (list != null) {
+			return ResponseEntity.status(r.getStatusCode()).body(productResourceModelAssembler.toCollectionModel(list).add(args));
+		} else {
+			return ResponseEntity.status(r.getStatusCode()).build();
+		}
 	}
 	
-	private List<ProductResourceDto> getAll() {
+	List<ProductResourceDto> getAll() {
 		return prodMap.mapToResourceList(prodService.readAll());
 	}
 
@@ -86,7 +105,7 @@ public class ProductsController {
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
-	private ResponseEntity<Object> getByCatAndName(@RequestParam(name = "c") String c,
+	ResponseEntity<Object> getByCatAndName(@RequestParam(name = "c") String c,
 			@RequestParam(name = "n") String n, @RequestParam(name = "s") int s) {
 		switch (s) {
 		case 0:
@@ -98,21 +117,21 @@ public class ProductsController {
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
-	private ResponseEntity<Object> getByCategoryAndMaxPrice(@RequestParam(name = "c") String c,
+	ResponseEntity<Object> getByCategoryAndMaxPrice(@RequestParam(name = "c") String c,
 			@RequestParam(name = "m") BigDecimal minPrice, @RequestParam(name = "x") BigDecimal maxPrice) {
 		
 			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndPrice(c, minPrice, maxPrice)));
 		
 	}
 	//cerca prodotti per parte nome prodotto DAL FRONTEND VOGLIO ( n => il nome)
-	private ResponseEntity<Object> getByName(@RequestParam(name = "n") String n) {
+	ResponseEntity<Object> getByName(@RequestParam(name = "n") String n) {
 		if(StringUtils.hasText(n)) {
 		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByName(n)));
 		}
 		return ResponseEntity.badRequest().build();
 	}
 	//cerca prodotti per parte di descrizione. DAL FRONTEND VOGLIO (d => parte di descrizione)
-	private ResponseEntity<Object> getByDescriptionContaining(@RequestParam(name = "d") String d) {
+	ResponseEntity<Object> getByDescriptionContaining(@RequestParam(name = "d") String d) {
 		if(StringUtils.hasText(d)) {
 		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByDescription(d)));
 		}
