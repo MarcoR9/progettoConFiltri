@@ -1,8 +1,7 @@
 package it.softx.northwind.app.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import it.softx.northwind.app.entity.Customer;
 import it.softx.northwind.model.dto.CustomerPostPatchDto;
 import it.softx.northwind.model.service.CustomerMapperService;
-import it.softx.northwind.model.service.CustomerService;
+import it.softx.northwind.model.service.UserService;
 
 @RestController
 @RequestMapping("/login")
@@ -21,19 +20,20 @@ import it.softx.northwind.model.service.CustomerService;
 public class LoginController {
 
 	@Autowired
-	private CustomerMapperService cusMap;
+	private UserService userService;
 	@Autowired
-	private CustomerService cusService;
+	private CustomerMapperService cusMap;
 	
 	@PostMapping
-	public ResponseEntity<Object> postCustomer(@RequestBody CustomerPostPatchDto customer){
-				
-		List<Customer> customerList= cusService.readCustomerByEmail(customer.getEmail());
-		if (customerList.isEmpty()) 
-			return ResponseEntity.notFound().build();
-		for (Customer c : customerList) {
-			return  ResponseEntity.ok(cusMap.mapToResource(c));
+	public ResponseEntity<Object> loginCustomer(@RequestBody CustomerPostPatchDto customer){
+		if(null==customer) {
+			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.badRequest().build();
+		Customer cust= userService.readByUsernamePassword(customer.getEmail(), customer.getPassword());
+		if(null!=cust) {
+			return ResponseEntity.ok(cusMap.mapToResource(cust));
+			}
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("EMAIL OR PASSWORD INCORRECT");
+				
 	}
 }

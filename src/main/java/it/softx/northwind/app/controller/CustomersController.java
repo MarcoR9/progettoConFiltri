@@ -1,6 +1,7 @@
 package it.softx.northwind.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import it.softx.northwind.model.dto.CustomerRegisterDto;
 import it.softx.northwind.model.dto.CustomerResourceDto;
 import it.softx.northwind.model.service.CustomerMapperService;
 import it.softx.northwind.model.service.CustomerService;
+import it.softx.northwind.model.service.UserService;
 
 @RestController
 @RequestMapping("/customers")
@@ -25,6 +27,8 @@ public class CustomersController {
 	private CustomerMapperService cusMap;
 	@Autowired
 	private CustomerService cusService;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomerResourceDto> getById(@PathVariable("id") Long id){
@@ -41,6 +45,10 @@ public class CustomersController {
 		if(null==customer) {
 			return ResponseEntity.badRequest().build();
 		}
+		if(null==userService.readByEmail(customer.getEmailAddress())) {
 		return ResponseEntity.ok(cusService.createCustomer(customer));
+		}
+		return ResponseEntity.status(HttpStatus.CONFLICT).body("EMAIL ALREADY IN USE");
+		
 	}
 }

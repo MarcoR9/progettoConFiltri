@@ -21,7 +21,6 @@ public class CustomerMapperServiceImpl implements CustomerMapperService {
 			return null;
 		}
 		CustomerResourceDto dto = new CustomerResourceDto();
-		dto.setId(cust.getId());
 		dto.setFirstName(cust.getFirstName());
 		dto.setLastName(cust.getLastName());
 		dto.setEmailAddress(cust.getEmailAddress());
