@@ -30,6 +30,7 @@ public class ProductsController {
 	@GetMapping
 	public ResponseEntity<Object> getAll(@RequestParam(name = "c", required = false) String c,
 			@RequestParam(name = "n", required = false) String n, @RequestParam(name = "p", required = false) Integer p,
+			@RequestParam(name = "s", required = false) Integer s,
 			@RequestParam(name = "m", required = false) BigDecimal minPrice,
 			@RequestParam(name = "x", required = false) BigDecimal maxPrice,
 			@RequestParam(name = "d", required = false) String d) {
@@ -45,17 +46,17 @@ public class ProductsController {
 		if (StringUtils.hasText(c) && minPrice != null && maxPrice != null) {
 			return getByCategoryAndMaxPrice(c, minPrice, maxPrice);
 		}
-		if (p == null || !StringUtils.hasText(c)) {
-			if (StringUtils.hasText(c) || StringUtils.hasText(n) || minPrice != null || maxPrice != null
-					|| StringUtils.hasText(d) || p != null) {
-				return ResponseEntity.badRequest().build();
-			}
-			return ResponseEntity.ok(getAll());
+		if (StringUtils.hasText(c) && StringUtils.hasText(n) && s != null) {
+			return getByCatAndName(c, n, s);
 		}
-		if (StringUtils.hasText(n)) {
-			return getByCatAndName(c, n, p);
+		if (StringUtils.hasText(c) && p != null) {
+			return getByCategoryAndPriceAscOrDesc(c, p);
 		}
-		return getByCategoryAndPriceAscOrDesc(c, p);
+		if (StringUtils.hasText(c) || StringUtils.hasText(n) || minPrice != null || maxPrice != null
+				|| StringUtils.hasText(d) || p != null || s != null) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(getAll());
 	}
 	
 	private List<ProductResourceDto> getAll() {
@@ -73,7 +74,7 @@ public class ProductsController {
 		
 	}
 	//DAL FRONTEND VOGLIO: (-LA CATEGORIA) e (-0 se senza filtro per prezzo, 1 se prezzo crescente, 2 se prezzo decrescente)
-	private ResponseEntity<Object> getByCategoryAndPriceAscOrDesc(@RequestParam(name = "c") String c,
+	public ResponseEntity<Object> getByCategoryAndPriceAscOrDesc(@RequestParam(name = "c") String c,
 			@RequestParam(name = "p") int p) {
 		switch (p) {
 		case 0:
