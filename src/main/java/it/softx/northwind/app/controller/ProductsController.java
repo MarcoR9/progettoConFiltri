@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ import it.softx.northwind.model.service.ProductMapperService;
 import it.softx.northwind.model.service.ProductService;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 @CrossOrigin(origins = "*")
 public class ProductsController {
 
@@ -27,12 +28,42 @@ public class ProductsController {
 	private ProductMapperService prodMap;
 
 	@GetMapping
-	public List<ProductResourceDto> getAll() {
+	public ResponseEntity<Object> getAll(@RequestParam(name = "c", required = false) String c,
+			@RequestParam(name = "n", required = false) String n, @RequestParam(name = "p", required = false) Integer p,
+			@RequestParam(name = "m", required = false) BigDecimal minPrice,
+			@RequestParam(name = "x", required = false) BigDecimal maxPrice,
+			@RequestParam(name = "d", required = false) String d) {
+		if (!StringUtils.hasText(c)) {
+			if (StringUtils.hasText(n)) {
+				return getByName(n);
+			}
+			if (StringUtils.hasText(d)) {
+				return getByDescriptionContaining(d);
+			}
+			return ResponseEntity.badRequest().build();
+		}
+		if (minPrice != null && maxPrice != null) {
+			return getByCategoryAndMaxPrice(c, minPrice, maxPrice);
+		}
+		if (p == null) {
+			if (StringUtils.hasText(c) || StringUtils.hasText(n) || minPrice != null || maxPrice != null
+					|| StringUtils.hasText(d)) {
+				return ResponseEntity.badRequest().build();
+			}
+			return ResponseEntity.ok(getAll());
+		}
+		if (StringUtils.hasText(n)) {
+			return getByCatAndName(c, n, p);
+		}
+		return getByCategoryAndPriceAscOrDesc(c, p);
+	}
+	
+	private List<ProductResourceDto> getAll() {
 		return prodMap.mapToResourceList(prodService.readAll());
 	}
 
-	@GetMapping("/id")
-	public ResponseEntity<Object> getById(@RequestParam(name = "i") Long id){
+	@GetMapping("/{id}")
+	public ResponseEntity<Object> getById(@PathVariable(name = "id") Long id){
 		   
 			ProductResourceDto dto= prodMap.mapToResource(prodService.readById(id));
 			if(null==dto) {
@@ -42,8 +73,7 @@ public class ProductsController {
 		
 	}
 	//DAL FRONTEND VOGLIO: (-LA CATEGORIA) e (-0 se senza filtro per prezzo, 1 se prezzo crescente, 2 se prezzo decrescente)
-	@GetMapping("/cat")
-	public ResponseEntity<Object> getByCategoryAndPriceAscOrDesc(@RequestParam(name = "c") String c,
+	private ResponseEntity<Object> getByCategoryAndPriceAscOrDesc(@RequestParam(name = "c") String c,
 			@RequestParam(name = "p") int p) {
 		switch (p) {
 		case 0:
@@ -55,8 +85,7 @@ public class ProductsController {
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
-	@GetMapping("/cat/name")
-	public ResponseEntity<Object> getByCatAndName(@RequestParam(name = "c") String c,
+	private ResponseEntity<Object> getByCatAndName(@RequestParam(name = "c") String c,
 			@RequestParam(name = "n") String n, @RequestParam(name = "s") int s) {
 		switch (s) {
 		case 0:
@@ -68,24 +97,21 @@ public class ProductsController {
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
-	@GetMapping("/cat/price")
-	public ResponseEntity<Object> getByCategoryAndMaxPrice(@RequestParam(name = "c") String c,
+	private ResponseEntity<Object> getByCategoryAndMaxPrice(@RequestParam(name = "c") String c,
 			@RequestParam(name = "m") BigDecimal minPrice, @RequestParam(name = "x") BigDecimal maxPrice) {
 		
 			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndPrice(c, minPrice, maxPrice)));
 		
 	}
 	//cerca prodotti per parte nome prodotto DAL FRONTEND VOGLIO ( n => il nome)
-	@GetMapping("/name")
-	public ResponseEntity<Object> getByName(@RequestParam(name = "n") String n) {
+	private ResponseEntity<Object> getByName(@RequestParam(name = "n") String n) {
 		if(StringUtils.hasText(n)) {
 		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByName(n)));
 		}
 		return ResponseEntity.badRequest().build();
 	}
 	//cerca prodotti per parte di descrizione. DAL FRONTEND VOGLIO (d => parte di descrizione)
-	@GetMapping("/des")
-	public ResponseEntity<Object> getByDescriptionContaining(@RequestParam(name = "d") String d) {
+	private ResponseEntity<Object> getByDescriptionContaining(@RequestParam(name = "d") String d) {
 		if(StringUtils.hasText(d)) {
 		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByDescription(d)));
 		}

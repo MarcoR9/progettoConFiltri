@@ -17,7 +17,7 @@ import it.softx.northwind.model.service.CustomerMapperService;
 import it.softx.northwind.model.service.CustomerService;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 @CrossOrigin(origins="*")
 public class CustomersController {
 
