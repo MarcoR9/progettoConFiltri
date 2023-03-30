@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="products", schema="northwind")
+@Table(name="products", catalog="northwind")
 @Entity
 public class Product {
 
@@ -17,15 +17,15 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	@Column(name = "category")
+	@Column(name = "category" ,nullable = true)
 	private String category;
 	@Column(name = "list_price", nullable = false)
 	private BigDecimal listPrice;
-	@Column(name = "product_name")
+	@Column(name = "product_name" ,nullable = true)
 	private String productName;
-	@Column(name = "product_code")
+	@Column(name = "product_code" ,nullable = true)
 	private String productCode;
-	@Column(name = "description")
+	@Column(name = "description" ,nullable = true)
 	private String description;
 	
 	public Long getId() {

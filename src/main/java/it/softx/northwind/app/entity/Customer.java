@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="customers", schema="northwind")
+@Table(name="customers", catalog="northwind")
 @Entity
 public class Customer {
 
@@ -15,11 +15,11 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	@Column(name = "last_name")
+	@Column(name = "last_name" ,nullable = true)
 	private String lastName;
-	@Column(name = "first_name")
+	@Column(name = "first_name" ,nullable = true)
 	private String firstName;
-	@Column(name = "email_address")
+	@Column(name = "email_address" ,nullable = true)
 	private String emailAddress;
 	public Long getId() {
 		return id;

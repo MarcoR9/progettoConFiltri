@@ -20,4 +20,9 @@ public class UserServiceImpl implements UserService {
 	public Customer readByUsernamePassword(String u, String p) {
 		return userDao.findByUsernamePassword(u, p).map(User::getCustomer).orElse(null);
 	}
+	
+	@Transactional
+	public User createUser(String username, String password, Long customerId) {
+		return userDao.createUser(username, password, customerId);
+	}
 }

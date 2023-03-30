@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="purchase_orders", schema="northwind")
+@Table(name="purchase_orders", catalog="northwind")
 @Entity
 public class PurchaseOrder {
 
@@ -17,7 +17,7 @@ public class PurchaseOrder {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	@Column(name="payment_amount")
+	@Column(name="payment_amount" ,nullable = true)
 	private BigDecimal paymentAmount;
 	
 	

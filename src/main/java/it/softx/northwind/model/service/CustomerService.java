@@ -3,6 +3,7 @@ package it.softx.northwind.model.service;
 import java.util.List;
 
 import it.softx.northwind.app.entity.Customer;
+import it.softx.northwind.model.dto.CustomerRegisterDto;
 
 public interface CustomerService {
 
@@ -11,5 +12,7 @@ public interface CustomerService {
 //	List<Customer> readCustomerAll();
 
 	List<Customer> readCustomerByEmail(String email);
+
+	Customer createCustomer(CustomerRegisterDto dto);
 
 }

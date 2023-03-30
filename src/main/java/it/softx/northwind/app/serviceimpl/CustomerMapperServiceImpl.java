@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import it.softx.northwind.app.entity.Customer;
+import it.softx.northwind.model.dto.CustomerRegisterDto;
 import it.softx.northwind.model.dto.CustomerResourceDto;
 import it.softx.northwind.model.service.CustomerMapperService;
 
@@ -37,6 +38,17 @@ public class CustomerMapperServiceImpl implements CustomerMapperService {
 			cust.add(mapToResource(p));
 		}
 	  return cust;
+	}
+	@Override
+	public Customer mapToEntity(CustomerRegisterDto dto) {
+		if(dto == null) {
+			return null;
+		}
+		Customer customer= new Customer();
+		customer.setLastName(dto.getLastName());
+		customer.setFirstName(dto.getFirstName());
+		customer.setEmailAddress(dto.getEmailAddress());
+		return customer;
 	}
 
 }

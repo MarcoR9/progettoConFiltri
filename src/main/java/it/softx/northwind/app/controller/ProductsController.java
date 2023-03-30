@@ -33,8 +33,12 @@ public class ProductsController {
 
 	@GetMapping("/id")
 	public ResponseEntity<Object> getById(@RequestParam(name = "i") Long id){
-		
-			return ResponseEntity.ok(prodMap.mapToResource(prodService.readById(id)));
+		   
+			ProductResourceDto dto= prodMap.mapToResource(prodService.readById(id));
+			if(null==dto) {
+				return ResponseEntity.notFound().build();
+			}
+			return ResponseEntity.ok(dto);
 		
 	}
 	//DAL FRONTEND VOGLIO: (-LA CATEGORIA) e (-0 se senza filtro per prezzo, 1 se prezzo crescente, 2 se prezzo decrescente)

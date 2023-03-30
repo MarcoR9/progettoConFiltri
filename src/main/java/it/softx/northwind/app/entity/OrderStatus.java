@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name="orders_status", schema="northwind")
+@Table(name="orders_status", catalog="northwind")
 @Entity
 public class OrderStatus {
 

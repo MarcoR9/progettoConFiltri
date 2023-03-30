@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
-@Table(name="orders", schema="northwind")
+@Table(name="orders", catalog="northwind")
 @Entity
 public class Order {
 
@@ -18,13 +18,13 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	@Column(name = "ship_address")
+	@Column(name = "ship_address" ,nullable = true)
 	private String shipAddress;
 	@ManyToOne
-	@JoinColumn(name = "status_id", referencedColumnName = "id")
+	@JoinColumn(name = "status_id", referencedColumnName = "id" ,nullable = true)
 	private OrderStatus orderStatus;
 	@ManyToOne
-	@JoinColumn(name = "customer_id", referencedColumnName = "id")
+	@JoinColumn(name = "customer_id", referencedColumnName = "id" ,nullable = true)
 	private Customer customer;
 	
 	public Long getId() {

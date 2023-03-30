@@ -35,7 +35,7 @@ public class CustomersController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> postCustomer(@RequestBody CustomerPostPatchDto customer){
+	public ResponseEntity<Object> postCustomer(@RequestBody CustomerPostPatchDto customer){
 				
 		List<Customer> customerList= cusService.readCustomerByEmail(customer.getEmail());
 		if (customerList.isEmpty()) 
@@ -46,5 +46,8 @@ public class CustomersController {
 		return ResponseEntity.badRequest().build();
 	}
 	
-	
+//	@PostMapping
+//	public ResponseEntity<Object> createCustomer(@RequestBody CustomerRegisterDto customer){
+//		
+//	}
 }
