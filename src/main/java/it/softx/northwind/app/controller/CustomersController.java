@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import it.softx.northwind.app.entity.Customer;
 import it.softx.northwind.model.dto.CustomerPostPatchDto;
+import it.softx.northwind.model.dto.CustomerRegisterDto;
 import it.softx.northwind.model.dto.CustomerResourceDto;
 import it.softx.northwind.model.service.CustomerMapperService;
 import it.softx.northwind.model.service.CustomerService;
+import it.softx.northwind.model.service.UserService;
 
 @RestController
 @RequestMapping("/customers")
@@ -27,6 +29,8 @@ public class CustomersController {
 	private CustomerMapperService cusMap;
 	@Autowired
 	private CustomerService cusService;
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomerResourceDto> getById(@PathVariable("id") Long id){
@@ -46,8 +50,11 @@ public class CustomersController {
 		return ResponseEntity.badRequest().build();
 	}
 	
-//	@PostMapping
-//	public ResponseEntity<Object> createCustomer(@RequestBody CustomerRegisterDto customer){
-//		
-//	}
+	@PostMapping
+	public ResponseEntity<Object> createCustomer(@RequestBody CustomerRegisterDto customer){
+		if(null==customer) {
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.ok(cusService.createCustomer(customer));
+	}
 }

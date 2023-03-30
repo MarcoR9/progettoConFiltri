@@ -1,7 +1,6 @@
 package it.softx.northwind.app.controller;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.softx.northwind.model.dto.ProductResourceDto;
 import it.softx.northwind.model.service.ProductMapperService;
 import it.softx.northwind.model.service.ProductService;
 
@@ -25,11 +23,6 @@ public class ProductsRestController {
 	private ProductService prodService;
 	@Autowired
 	private ProductMapperService prodMap;
-
-	@GetMapping
-	public List<ProductResourceDto> getAll() {
-		return prodMap.mapToResourceList(prodService.readAll());
-	}
 
 	@GetMapping
 	public ResponseEntity<Object> getAll(@RequestParam(name = "c", required = false) String c,
