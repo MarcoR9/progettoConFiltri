@@ -40,14 +40,14 @@ public class ProductsController {
 			if (StringUtils.hasText(d)) {
 				return getByDescriptionContaining(d);
 			}
-			return ResponseEntity.badRequest().build();
+			// devo necessariamente gocciolare
 		}
-		if (minPrice != null && maxPrice != null) {
+		if (StringUtils.hasText(c) && minPrice != null && maxPrice != null) {
 			return getByCategoryAndMaxPrice(c, minPrice, maxPrice);
 		}
-		if (p == null) {
+		if (p == null || !StringUtils.hasText(c)) {
 			if (StringUtils.hasText(c) || StringUtils.hasText(n) || minPrice != null || maxPrice != null
-					|| StringUtils.hasText(d)) {
+					|| StringUtils.hasText(d) || p != null) {
 				return ResponseEntity.badRequest().build();
 			}
 			return ResponseEntity.ok(getAll());
