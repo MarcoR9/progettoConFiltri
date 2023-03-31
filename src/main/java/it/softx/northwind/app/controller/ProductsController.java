@@ -26,7 +26,11 @@ public class ProductsController {
 	private ProductMapperService prodMap;
 
 	@GetMapping
-	public ResponseEntity<Object> getAll(@RequestParam(name = "p") int p,@RequestParam(name = "a")BigDecimal minListPrice, @RequestParam(name = "z")BigDecimal maxListPrice) {
+	public ResponseEntity<Object> getAll(){
+		return ResponseEntity.ok(prodService.readAll());
+	}
+	@GetMapping("/p")
+	public ResponseEntity<Object> getAllParams(@RequestParam(name = "p") int p,@RequestParam(name = "a")BigDecimal minListPrice, @RequestParam(name = "z")BigDecimal maxListPrice) {
 		switch (p) {
 		case 0:
 			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAll(minListPrice, maxListPrice)));

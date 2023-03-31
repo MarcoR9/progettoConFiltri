@@ -57,4 +57,6 @@ public interface ProductService {
 
 	BigDecimal readMaxPrice();
 
+	List<Product> readAll();
+
 }
