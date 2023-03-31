@@ -58,6 +58,15 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> readByName(String name, BigDecimal minListPrice, BigDecimal maxListPrice){
 		return productDao.findByProductNameContainingAndListPriceGreaterThanAndListPriceLessThan(name, minListPrice,  maxListPrice);
 	}
+	@Override
+	public List<Product> readByNameAsc(String name, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByProductNameContainingAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceAsc(name, minListPrice,  maxListPrice);
+	}
+	@Override
+	public List<Product> readByNameDesc(String name, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByProductNameContainingAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceDesc(name, minListPrice,  maxListPrice);
+	}
+	
 
 	@Override
 	public List<Product> readByCategoryAsc(String category, BigDecimal minListPrice, BigDecimal maxListPrice){

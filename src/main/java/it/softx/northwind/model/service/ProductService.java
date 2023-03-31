@@ -59,4 +59,8 @@ public interface ProductService {
 
 	List<Product> readAll();
 
+	List<Product> readByNameDesc(String name, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByNameAsc(String name, BigDecimal minListPrice, BigDecimal maxListPrice);
+
 }

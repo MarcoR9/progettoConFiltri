@@ -93,11 +93,16 @@ public class ProductsController {
 	}
 	//cerca prodotti per parte nome prodotto DAL FRONTEND VOGLIO ( n => il nome)
 	@GetMapping("/name")
-	public ResponseEntity<Object> getByName(@RequestParam(name = "n") String n) {
-		if(StringUtils.hasText(n)) {
-		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByName(n)));
+	public ResponseEntity<Object> getByName(@RequestParam(name = "n") String n,  @RequestParam(name = "s") int s, @RequestParam(name = "a")BigDecimal minListPrice, @RequestParam(name = "z")BigDecimal maxListPrice) {
+		switch (s) {
+		case 0:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByName(n,minListPrice, maxListPrice)));
+		case 1:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByNameAsc( n, minListPrice, maxListPrice)));
+		case 2:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByNameDesc( n, minListPrice, maxListPrice)));
+		default: return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.badRequest().build();
 	}
 	//cerca prodotti per parte di descrizione. DAL FRONTEND VOGLIO (d => parte di descrizione)
 	@GetMapping("/des")

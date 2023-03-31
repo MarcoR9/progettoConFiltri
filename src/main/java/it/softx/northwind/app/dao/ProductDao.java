@@ -25,4 +25,6 @@ public interface ProductDao extends JpaRepository<Product, Long> {
  	List<Product> findByCategoryAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceAsc(String category,BigDecimal minListPrice, BigDecimal maxListPrice);
     List<Product> findByCategoryAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceDesc(String category,BigDecimal minListPrice, BigDecimal maxListPrice);
     List<Product> findByCategoryAndListPriceGreaterThanAndListPriceLessThan(String category,BigDecimal minListPrice, BigDecimal maxListPrice);	    
+	List<Product> findByProductNameContainingAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceAsc(String productName,BigDecimal minListPrice, BigDecimal maxListPrice);
+	List<Product> findByProductNameContainingAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceDesc(String productName,BigDecimal minListPrice, BigDecimal maxListPrice);
 }
