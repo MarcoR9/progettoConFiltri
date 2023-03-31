@@ -22,11 +22,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 	@Override
 	public List<Product> readAllAsc(){
-		return productDao.findAllOrderByListPriceAsc();
+		return productDao.findAllByOrderByListPriceAsc();
 	}
 	@Override
 	public List<Product> readAllDesc(){
-		return productDao.findAllOrderByListPriceDesc();
+		return productDao.findAllByOrderByListPriceDesc();
 	}
 	@Override
 	public Product readById(Long id){
