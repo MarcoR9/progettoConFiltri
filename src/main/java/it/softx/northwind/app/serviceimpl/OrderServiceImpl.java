@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 		// creazione order
 		long id = 1;
 		List<Customer> cu = cusDao.findByEmailAddress(o.getUsername());
-		order.setShipAddress(o.getShipAdress());
+		order.setShipAddress(o.getAddress());
 		order.setOrderStatus(new OrderStatus(id, "New"));
 		for (Customer customer : cu) {
 			order.setCustomer(customer);

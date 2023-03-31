@@ -7,9 +7,7 @@ public class OrderPostPatchDto {
 
 	private String address;
 	private String username;
-	private String shipAdress;
 	private BigDecimal payment;
-//	private PurchaseOrderResourceDto purchaseOrder;
 	private List<OrderDetailPostPatchDto> orderDetails;
 
 	public BigDecimal getPayment() {
@@ -36,28 +34,12 @@ public class OrderPostPatchDto {
 		this.username = username;
 	}
 
-//	public PurchaseOrderResourceDto getPurchaseOrder() {
-//		return purchaseOrder;
-//	}
-//
-//	public void setPurchaseOrder(PurchaseOrderResourceDto purchaseOrder) {
-//		this.purchaseOrder = purchaseOrder;
-//	}
-
 	public List<OrderDetailPostPatchDto> getOrderDetails() {
 		return orderDetails;
 	}
 
 	public void setOrderDetails(List<OrderDetailPostPatchDto> orderDetails) {
 		this.orderDetails = orderDetails;
-	}
-
-	public String getShipAdress() {
-		return shipAdress;
-	}
-
-	public void setShipAdress(String shipAdress) {
-		this.shipAdress = shipAdress;
 	}
 
 }

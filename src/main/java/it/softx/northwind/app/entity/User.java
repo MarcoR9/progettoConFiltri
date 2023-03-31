@@ -18,7 +18,7 @@ public class User {
 	@Column(name="id",  nullable = false)
 	private Long id;
 	
-	@Column(name="username" ,nullable = true)
+	@Column(name="username" ,nullable = false)
 	private String username;
 	
 	@JoinColumn(name="customer_id", referencedColumnName="id", nullable = true)
