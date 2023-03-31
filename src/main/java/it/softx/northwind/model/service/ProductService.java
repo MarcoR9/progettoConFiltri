@@ -21,7 +21,7 @@ public interface ProductService {
 
 	List<Product> readByCategoryDesc(String category);
 
-	List<Product> readAll();
+	List<Product> readAll(BigDecimal minPrice, BigDecimal maxPrice);
 
 	List<Product> readByCatAndPrice(String category,BigDecimal minPrice, BigDecimal maxPrice);
 
@@ -36,5 +36,25 @@ public interface ProductService {
 	List<Product> readAllAsc();
 
 	List<Product> readAllDesc();
+
+	List<Product> readByName(String name, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByCategoryAsc(String category, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByCatAndNameDesc(String category, String name, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByCatAndNameAsc(String category, String name, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByCategory(String category, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readAllDesc(BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByCatAndName(String category, String name, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readAllAsc(BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	List<Product> readByCategoryDesc(String category, BigDecimal minListPrice, BigDecimal maxListPrice);
+
+	BigDecimal readMaxPrice();
 
 }

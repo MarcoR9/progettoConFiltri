@@ -16,51 +16,56 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductDao productDao;
 	
+	
 	@Override
-	public List<Product> readAll(){
-		return productDao.findAll();
+	public BigDecimal readMaxPrice() {
+		return productDao.findFirstByOrderByListPriceDesc().getListPrice();
 	}
 	@Override
-	public List<Product> readAllAsc(){
-		return productDao.findAllByOrderByListPriceAsc();
+	public List<Product> readAll(BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findAllByListPriceGreaterThanAndListPriceLessThan(minListPrice, maxListPrice);
 	}
 	@Override
-	public List<Product> readAllDesc(){
-		return productDao.findAllByOrderByListPriceDesc();
+	public List<Product> readAllAsc(BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findAllByListPriceGreaterThanAndListPriceLessThanOrderByListPriceAsc(minListPrice, maxListPrice);
+	}
+	@Override
+	public List<Product> readAllDesc(BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findAllByListPriceGreaterThanAndListPriceLessThanOrderByListPriceDesc(minListPrice,maxListPrice);
 	}
 	@Override
 	public Product readById(Long id){
 		return productDao.findById(id).orElse(null);
 	}
 	@Override
-	public List<Product> readByCategory(String category){
-		return productDao.findByCategory(category);
+	public List<Product> readByCategory(String category, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByCategoryAndListPriceGreaterThanAndListPriceLessThan(category, minListPrice,  maxListPrice);
 	}
 	@Override
-	public List<Product> readByCatAndName(String category, String name){
-		return productDao.findByCategoryAndProductNameContaining(category, name);
+	public List<Product> readByCatAndName(String category, String name, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByCategoryAndProductNameContainingAndListPriceGreaterThanAndListPriceLessThan(category, name, minListPrice,  maxListPrice);
 	}
 	@Override
-	public List<Product> readByCatAndNameAsc(String category, String name){
-		return productDao.findByCategoryAndProductNameContainingOrderByListPriceAsc(category, name);
+	public List<Product> readByCatAndNameAsc(String category, String name, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByCategoryAndProductNameContainingAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceAsc(category, name, minListPrice,  maxListPrice);
 	}
 	@Override
-	public List<Product> readByCatAndNameDesc(String category, String name){
-		return productDao.findByCategoryAndProductNameContainingOrderByListPriceDesc(category, name);
+	public List<Product> readByCatAndNameDesc(String category, String name, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByCategoryAndProductNameContainingAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceDesc(category, name, minListPrice,  maxListPrice);
 	}
 	
 	@Override
-	public List<Product> readByName(String name){
-		return productDao.findByProductNameContaining(name);
+	public List<Product> readByName(String name, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByProductNameContainingAndListPriceGreaterThanAndListPriceLessThan(name, minListPrice,  maxListPrice);
 	}
 
 	@Override
-	public List<Product> readByCategoryAsc(String category){
-		return productDao.findByCategoryOrderByListPriceAsc(category);
+	public List<Product> readByCategoryAsc(String category, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByCategoryAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceAsc(category, minListPrice,  maxListPrice);
 	}
 	@Override
-	public List<Product> readByCategoryDesc(String category){
-		return productDao.findByCategoryOrderByListPriceDesc(category);
+	public List<Product> readByCategoryDesc(String category, BigDecimal minListPrice, BigDecimal maxListPrice){
+		return productDao.findByCategoryAndListPriceGreaterThanAndListPriceLessThanOrderByListPriceDesc(category, minListPrice,  maxListPrice);
 	}
 	@Override
 	public List<Product> readByDescription(String description){
@@ -75,6 +80,51 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<String> getCategories(){
 		return productDao.findDistinctByCategory();
+	}
+	@Override
+	public List<Product> readByName(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readByCategory(String category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readByCategoryAsc(String category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readByCategoryDesc(String category) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readByCatAndName(String category, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readByCatAndNameDesc(String category, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readByCatAndNameAsc(String category, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readAllAsc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Product> readAllDesc() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

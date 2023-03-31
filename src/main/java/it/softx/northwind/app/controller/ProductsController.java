@@ -1,7 +1,6 @@
 package it.softx.northwind.app.controller;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +26,21 @@ public class ProductsController {
 	private ProductMapperService prodMap;
 
 	@GetMapping
-	public ResponseEntity<Object> getAll(@RequestParam(name = "p") int p) {
+	public ResponseEntity<Object> getAll(@RequestParam(name = "p") int p,@RequestParam(name = "a")BigDecimal minListPrice, @RequestParam(name = "z")BigDecimal maxListPrice) {
 		switch (p) {
 		case 0:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAll()));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAll(minListPrice, maxListPrice)));
 		case 1:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAllAsc()));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAllAsc(minListPrice, maxListPrice)));
 		case 2:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAllDesc()));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAllDesc(minListPrice, maxListPrice)));
 		default: return ResponseEntity.badRequest().build();
 		}
 		
+	}
+	@GetMapping("/max")
+	public ResponseEntity<Object> getMaxPrice() {
+		return ResponseEntity.ok(prodService.readMaxPrice());
 	}
 
 	@GetMapping("/id")
@@ -53,27 +56,27 @@ public class ProductsController {
 	//DAL FRONTEND VOGLIO: (-LA CATEGORIA) e (-0 se senza filtro per prezzo, 1 se prezzo crescente, 2 se prezzo decrescente)
 	@GetMapping("/cat")
 	public ResponseEntity<Object> getByCategoryAndPriceAscOrDesc(@RequestParam(name = "c") String c,
-			@RequestParam(name = "p") int p) {
+			@RequestParam(name = "p") int p, @RequestParam(name = "a")BigDecimal minListPrice, @RequestParam(name = "z")BigDecimal maxListPrice) {
 		switch (p) {
 		case 0:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCategory(c)));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCategory(c, minListPrice, maxListPrice)));
 		case 1:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCategoryAsc(c)));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCategoryAsc(c, minListPrice, maxListPrice)));
 		case 2:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCategoryDesc(c)));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCategoryDesc(c, minListPrice, maxListPrice)));
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
 	@GetMapping("/cat/name")
 	public ResponseEntity<Object> getByCatAndName(@RequestParam(name = "c") String c,
-			@RequestParam(name = "n") String n, @RequestParam(name = "s") int s) {
+			@RequestParam(name = "n") String n, @RequestParam(name = "s") int s, @RequestParam(name = "a")BigDecimal minListPrice, @RequestParam(name = "z")BigDecimal maxListPrice) {
 		switch (s) {
 		case 0:
-		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndName(c, n)));
+		return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndName(c, n, minListPrice, maxListPrice)));
 		case 1:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndNameAsc(c, n)));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndNameAsc(c, n, minListPrice, maxListPrice)));
 		case 2:
-			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndNameDesc(c, n)));
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readByCatAndNameDesc(c, n, minListPrice, maxListPrice)));
 		default: return ResponseEntity.badRequest().build();
 		}
 	}
