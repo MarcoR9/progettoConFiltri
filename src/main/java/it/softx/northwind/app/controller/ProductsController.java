@@ -27,8 +27,17 @@ public class ProductsController {
 	private ProductMapperService prodMap;
 
 	@GetMapping
-	public List<ProductResourceDto> getAll() {
-		return prodMap.mapToResourceList(prodService.readAll());
+	public ResponseEntity<Object> getAll(@RequestParam(name = "p") int p) {
+		switch (p) {
+		case 0:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAll()));
+		case 1:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAllAsc()));
+		case 2:
+			return ResponseEntity.ok(prodMap.mapToResourceList(prodService.readAllDesc()));
+		default: return ResponseEntity.badRequest().build();
+		}
+		
 	}
 
 	@GetMapping("/id")

@@ -33,4 +33,8 @@ public interface ProductService {
 
 	Product readById(Long id);
 
+	List<Product> readAllAsc();
+
+	List<Product> readAllDesc();
+
 }

@@ -21,6 +21,14 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.findAll();
 	}
 	@Override
+	public List<Product> readAllAsc(){
+		return productDao.findAllOrderByListPriceAsc();
+	}
+	@Override
+	public List<Product> readAllDesc(){
+		return productDao.findAllOrderByListPriceDesc();
+	}
+	@Override
 	public Product readById(Long id){
 		return productDao.findById(id).orElse(null);
 	}
